@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ScrollView
+        android:background="@mipmap/arduino_homepage_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        tools:context="com.balaenterprises.arduinointegration.MainActivity"
+        android:weightSum="1">
+
+     <RelativeLayout
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content">
+        <ProgressBar
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+             android:progressDrawable="@drawable/red_progress_bar"
+             android:id="@+id/progressBar_red" />
+         <TextView
+             android:background="#00000000"
+             android:layout_height="wrap_content"
+             android:gravity="center"
+             android:textColor="#ffff"
+             android:layout_width="match_parent"
+             android:id="@+id/progressBar_red_textview"
+             android:layout_alignLeft="@id/progressBar_red"
+             android:layout_alignTop="@id/progressBar_red"
+             android:layout_alignRight="@id/progressBar_red"
+             android:layout_alignBottom="@id/progressBar_red"
+         />
+     </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <ProgressBar
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:progressDrawable="@drawable/blue_progress_bar"
+            android:id="@+id/progressBar_blue"
+            android:layout_marginTop="38dp" />
+            <TextView
+                android:background="#00000000"
+                android:layout_height="wrap_content"
+                android:textColor="#ffff"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:id="@+id/progressBar_blue_textview"
+                android:layout_alignLeft="@id/progressBar_blue"
+                android:layout_alignTop="@id/progressBar_blue"
+                android:layout_alignRight="@id/progressBar_blue"
+                android:layout_alignBottom="@id/progressBar_blue"
+                />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ProgressBar
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:progressDrawable="@drawable/green_progress_bar"
+                android:id="@+id/progressBar_green"
+                android:layout_marginTop="35dp" />
+            <TextView
+                android:background="#00000000"
+                android:layout_height="wrap_content"
+                android:textColor="#ffff"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:id="@+id/progressBar_green_textview"
+                android:layout_alignLeft="@id/progressBar_green"
+                android:layout_alignTop="@id/progressBar_green"
+                android:layout_alignRight="@id/progressBar_green"
+                android:layout_alignBottom="@id/progressBar_green"
+                />
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="57dp"
+            android:weightSum="100">
+        <TextView
+            android:text="Date: 23/07/2016"
+            android:textColor="#ffff"
+            android:layout_weight="75"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/date"/>
+
+        <TextView
+            android:text="S"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:textColor="#ffff"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/S_value"/>
+        </LinearLayout>
+        <Button
+            android:text="S"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:id="@+id/s_btn"
+            android:background="@drawable/button"
+            android:layout_marginTop="30dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="100">
+        <Button
+            android:text="Shift - Red"
+            android:background="@drawable/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="20"
+            android:id="@+id/shift" />
+        <android.support.v4.widget.Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="60"/>
+            <Button
+                android:text="New"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/new_btn"
+                android:layout_gravity="end"
+                android:background="@drawable/button"
+                android:layout_weight="20"
+                 />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="100"
+            android:layout_marginTop="30dp">
+            <Button
+                android:text="Connect"
+                android:background="@drawable/button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="20"
+                android:id="@+id/connect" />
+            <android.support.v4.widget.Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="60"/>
+            <Button
+                android:text="Settings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/settings"
+                android:layout_gravity="end"
+                android:background="@drawable/button"
+                android:layout_weight="20"
+                />
+        </LinearLayout>
+        <Button
+            android:text="Temperature Graph"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:id="@+id/temperature" />
+    </LinearLayout>
+</ScrollView>
+
+</FrameLayout>
