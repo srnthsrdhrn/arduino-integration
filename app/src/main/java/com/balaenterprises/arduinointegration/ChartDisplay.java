@@ -51,7 +51,7 @@ public class ChartDisplay extends AppCompatActivity {
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss a", Locale.US);
                 try {
                     Date date = simpleDateFormat.parse(c.getString(c.getColumnIndex(DataStorage.TEMPERATURE_DATE)));
-                    YAxis_Time.add(date.getMinutes());
+                    YAxis_Time.add(date.getDate());
                     XAxis_Temperature.add(Float.parseFloat(c.getString(c.getColumnIndex(DataStorage.TEMPERATURE_VALUE))));
                 } catch (ParseException e) {
                     e.printStackTrace();
@@ -62,7 +62,7 @@ public class ChartDisplay extends AppCompatActivity {
             // turn the above arrays into XYSeries':
             // (Y_VALS_ONLY means use the element index as the x value)
             XYSeries series1 = new SimpleXYSeries(
-                    XAxis_Temperature, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY,"Time");
+                    XAxis_Temperature, SimpleXYSeries.ArrayFormat.Y_VALS_ONLY,"Temperature");
             // create formatters to use for drawing a series using LineAndPointRenderer
             // and configure them from xml:
             LineAndPointFormatter series1Format = new LineAndPointFormatter();

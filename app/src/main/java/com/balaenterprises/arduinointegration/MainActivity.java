@@ -2,20 +2,16 @@ package com.balaenterprises.arduinointegration;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
-import android.content.BroadcastReceiver;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
-import android.os.Handler;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -24,9 +20,18 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.lang.Thread.UncaughtExceptionHandler;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -36,7 +41,9 @@ import java.util.UUID;
 import static com.balaenterprises.arduinointegration.R.id.progressBar_red_textview;
 
 public class MainActivity extends AppCompatActivity {
+
     private static final String NAME = "Arduino";
+
     ProgressBar[] progressBars;
     TextView[] textViews;
     Button settings,connect, s_btn,shift,new_btn, temperature_graph;
@@ -49,11 +56,28 @@ public class MainActivity extends AppCompatActivity {
     boolean connected=false;
     AlertDialog dialog;
     SQLiteDatabase db;
+    ErrorReportService service;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Intent intent = new Intent(MainActivity.this,ErrorReportService.class);
+        startService(intent);
         dataStorage = new DataStorage(this,DataStorage.DATABASE_NAME,null,DataStorage.DATABASE_VERSION);
+        service = new ErrorReportService();
+        service.connect(dataStorage.GetCrashReport());
+        Thread.currentThread().setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
+            @Override
+            public void uncaughtException(Thread thread, Throwable throwable) {
+                StringWriter stringWriter = new StringWriter();
+                PrintWriter printWriter = new PrintWriter(stringWriter);
+                throwable.printStackTrace(printWriter);
+                dataStorage.StoreCrashReport(stringWriter.toString());
+                ErrorReportService.crashed=true;
+            }
+
+        });
+
         db= dataStorage.getWritableDatabase();
         progressBars = new ProgressBar[3];
         textViews = new TextView[3];
@@ -95,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
             progressBars[2].setProgress(data.green);
         }else{
             date.setText(data.date);
-            s_value.setText("S=0");
+            s_value.setText("0");
             textViews[0].setText("0");
             textViews[1].setText("0");
             textViews[2].setText("0");
@@ -149,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
         connect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                connect();
+                int g = Integer.parseInt("2.5");
             }
         });
 
@@ -365,45 +389,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private class Server extends AsyncTask<BluetoothAdapter,Void,Void>{
-        BluetoothServerSocket bluetoothServerSocket;
-        @Override
-        protected Void doInBackground(BluetoothAdapter... bluetoothAdapters) {
-            try {
-                bluetoothServerSocket=bluetoothAdapters[0].listenUsingInsecureRfcommWithServiceRecord(NAME,MY_UUID);
-                BluetoothSocket socket;
-                // Keep listening until exception occurs or a socket is returned
-                while (true) {
-                    try {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(MainActivity.this,"Bluetooth Hotspot Started",Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                        socket = bluetoothServerSocket.accept();
-                    } catch (IOException e) {
-                        Toast.makeText(MainActivity.this,"Timed Out Try connecting again",Toast.LENGTH_LONG).show();
-                        break;
-                    }
-                    // If a connection was accepted
-                    if (socket != null) {
-                        // Do work to manage the connection (in a separate thread)
-                        manageConnectedSocket(socket);
-                        try {
-                            bluetoothServerSocket.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        break;
-                    }
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-    }
+
 
     private void manageConnectedSocket(BluetoothSocket mmSocket) {
 
@@ -490,9 +476,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode==RESULT_CANCELED){
+        if(resultCode==RESULT_OK){
+            connect();
+        }else{
             Toast.makeText(this,"Bluetooth Should be enabled to Connect",Toast.LENGTH_SHORT).show();
-
         }
     }
+
+
+
 }

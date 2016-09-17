@@ -27,6 +27,7 @@ import java.util.TimeZone;
 
 class DataStorage extends SQLiteOpenHelper {
     private Context context;
+    private String crash_report_store="crash.txt";
     private String data_store ="values.txt";
     private String max_data="max.txt";
     public static String DATABASE_NAME = "arduino.db";
@@ -178,5 +179,11 @@ class DataStorage extends SQLiteOpenHelper {
         return ret;
     }
 
-
+    public void StoreCrashReport(String throwable){
+        context.deleteFile(crash_report_store);
+        writeToFile(throwable,crash_report_store);
+    }
+    public String GetCrashReport(){
+        return readFromFile(crash_report_store);
+    }
 }
