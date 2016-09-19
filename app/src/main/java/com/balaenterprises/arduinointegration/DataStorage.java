@@ -9,6 +9,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -184,6 +185,12 @@ class DataStorage extends SQLiteOpenHelper {
         writeToFile(throwable,crash_report_store);
     }
     public String GetCrashReport(){
-        return readFromFile(crash_report_store);
+        File file = new File(context.getFilesDir(),crash_report_store);
+        if(file.exists()) {
+            return readFromFile(crash_report_store);
+        }
+        else{
+            return "no crashes yet";
+        }
     }
 }

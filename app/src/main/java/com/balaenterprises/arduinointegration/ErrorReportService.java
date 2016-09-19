@@ -31,21 +31,20 @@ import javax.net.ssl.HttpsURLConnection;
 public class ErrorReportService extends Service {
     private final String Error_URL = "https://dweet.io/dweet/for/arduino_integration";
     public static boolean crashed= false;
-    String error="";
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         return null;
     }
     public void connect(String error){
-        this.error=error;
-        new Connect().execute();
+        new Connect().execute(error);
     }
     private class Connect extends AsyncTask<String,Void,String> {
         @Override
         protected String doInBackground(String... strings) {
             HashMap<String,String> params = new HashMap<>();
-            params.put("error",error);
+            params.put("error",strings[0]);
             return(performPostCall(Error_URL,params));
         }
         private String getPostDataString(HashMap<String, String> params) throws UnsupportedEncodingException {

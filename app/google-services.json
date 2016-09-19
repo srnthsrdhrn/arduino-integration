@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1063184254130",
+    "firebase_url": "https://arduinointegration.firebaseio.com",
+    "project_id": "arduinointegration",
+    "storage_bucket": "arduinointegration.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1063184254130:android:a5a1f76c26efe22e",
+        "android_client_info": {
+          "package_name": "com.balaenterprises.arduinointegration"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1063184254130-rb0qb53htc68ju98ilgk84ag3er1ur5d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVpKsHj04fi7XjSkl2PwZ3MkDEPIwaNZg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

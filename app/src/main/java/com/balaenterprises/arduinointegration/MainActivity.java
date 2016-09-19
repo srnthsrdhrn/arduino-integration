@@ -43,7 +43,7 @@ import static com.balaenterprises.arduinointegration.R.id.progressBar_red_textvi
 public class MainActivity extends AppCompatActivity {
 
     private static final String NAME = "Arduino";
-
+    private String log="No Log Recorded";
     ProgressBar[] progressBars;
     TextView[] textViews;
     Button settings,connect, s_btn,shift,new_btn, temperature_graph;
@@ -173,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
         connect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int g = Integer.parseInt("2.5");
+                connect();
             }
         });
 
@@ -265,7 +265,6 @@ public class MainActivity extends AppCompatActivity {
                 dialog.show();
 
 
-               // new Server().execute(bluetoothAdapter);
             }else{
                 Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                 startActivityForResult(intent,1);
@@ -294,7 +293,10 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onProgressUpdate(String... values) {
             super.onProgressUpdate(values);
+            values[0]=values[0].replaceAll("\"","");
             String[] value = values[0].split(";");
+            log = values[0];
+
             if(value.length==3) {
                 Select = 0;
                 shift.setText("Shift - Red");
@@ -302,7 +304,7 @@ public class MainActivity extends AppCompatActivity {
 
                 int red = Integer.parseInt(value[0]);
                 int blue = Integer.parseInt(value[1]);
-                int green = Integer.parseInt(value[2]);
+                int green = Integer.parseInt(value[2].replaceAll("\"",""));
                 boolean flag1, flag2, flag3;
                 if (red < progressBars[0].getProgress()) {
                     red = progressBars[0].getProgress();
@@ -325,8 +327,12 @@ public class MainActivity extends AppCompatActivity {
                 progressBars[0].setProgress(red);
                 progressBars[1].setProgress(blue);
                 progressBars[2].setProgress(green);
+
                 if (!flag1 && !flag2 && !flag3) {
                     send();
+                    log+= "App has the Larger value, so greater value sent to hardware";
+                }else{
+                    log+=" App has smaller value, so app's data is updated from hardware";
                 }
             }else if(value.length==4){
                 Date date1 = new Date();
@@ -343,10 +349,13 @@ public class MainActivity extends AppCompatActivity {
                 progressBars[0].setProgress(0);
                 progressBars[1].setProgress(0);
                 progressBars[2].setProgress(0);
+                log+=" ProgressBar Values  Reset on " + dates;
             }else if(value.length==1){
                 float temp = Float.parseFloat(value[0]);
                 dataStorage.Store_Temperature(db,temp);
+                log+="Temperature Data Recieved and Stored in database"+ value[0];
             }
+            service.connect(log);
         }
 
         @Override

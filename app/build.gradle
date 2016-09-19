@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'com.google.gms.google-services'
 android {
     compileSdkVersion 24
     buildToolsVersion "24.0.1"
@@ -25,4 +25,5 @@ dependencies {
     compile 'com.android.support:design:24.2.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha5'
     compile "com.androidplot:androidplot-core:1.1.0"
+    compile 'com.google.firebase:firebase-crash:9.4.0'
 }
